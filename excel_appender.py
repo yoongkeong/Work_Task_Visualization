@@ -11,18 +11,23 @@ def duration_to_seconds(duration_str):
     hours = int(duration_parts[0])
     minutes = int(duration_parts[1])
     
-    # Extract seconds and handle decimal parts
-    seconds_with_millis = duration_parts[2].split('.')
-    seconds = int(seconds_with_millis[0])
+    # Extract seconds and handle milliseconds
+    seconds_millis = duration_parts[2].split('.')
+    seconds = int(seconds_millis[0])
     
-    # Handle optional milliseconds
-    if len(seconds_with_millis) > 1:
-        milliseconds = int(seconds_with_millis[1])
+    if len(seconds_millis) > 1:
+        milliseconds = round(float("0." + seconds_millis[1]))  # Convert and round milliseconds
     else:
         milliseconds = 0
 
-    total_seconds = hours * 3600 + minutes * 60 + seconds + milliseconds / 1000  # Convert milliseconds to seconds
+    total_seconds = hours * 3600 + minutes * 60 + seconds + milliseconds  # Include milliseconds
     return total_seconds
+
+def format_duration(duration_str):
+    # Parse duration in HH:MM:SS format and format it as '0:00:00'
+    total_seconds = duration_to_seconds(duration_str)
+    formatted_duration = f"{int(total_seconds // 3600):02}:{int((total_seconds % 3600) // 60):02}:{int(total_seconds % 60):02}"
+    return formatted_duration
 
 def append_task_data(task_label, task_name, start_time_str, end_time_str, duration_str):
     # Define the Excel file path (create it in the current directory)
@@ -32,16 +37,16 @@ def append_task_data(task_label, task_name, start_time_str, end_time_str, durati
     start_time = datetime.strptime(start_time_str, '%Y:%m:%d:%H:%M:%S')
     end_time = datetime.strptime(end_time_str, '%Y:%m:%d:%H:%M:%S')
 
-    # Convert duration to seconds
-    duration_seconds = duration_to_seconds(duration_str)
+    # Format the duration
+    formatted_duration = format_duration(duration_str)
 
     # Create a new row of data as a dictionary
     new_row = {
-        'Task Label': [task_label],
-        'Task Name': [task_name],
-        'Start DateTime': [start_time],
-        'End DateTime': [end_time],
-        'Duration (seconds)': [duration_seconds]
+        'Task Label': task_label,
+        'Task Name': task_name,
+        'Start DateTime': start_time,
+        'End DateTime': end_time,
+        'Duration (seconds)': formatted_duration
     }
 
     # Load the existing Excel file into a pandas DataFrame (if it exists)
@@ -52,7 +57,7 @@ def append_task_data(task_label, task_name, start_time_str, end_time_str, durati
         df = pd.DataFrame(columns=['Task Label', 'Task Name', 'Start DateTime', 'End DateTime', 'Duration (seconds)'])
 
     # Append the new row to the DataFrame
-    df = pd.concat([df, pd.DataFrame(new_row)])
+    df = pd.concat([df, pd.DataFrame([new_row])])
 
     # Save the updated DataFrame to the Excel file
     with pd.ExcelWriter(excel_file_path, engine='openpyxl') as writer:
