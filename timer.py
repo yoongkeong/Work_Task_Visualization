@@ -1,6 +1,7 @@
 import time
 import tkinter as tk
 from datetime import datetime, timedelta
+import subprocess
 
 class Timer:
     def __init__(self):
@@ -58,7 +59,8 @@ def stop_timer():
     print(f"Start DateTime: {start_time}")
     print(f"End DateTime: {end_time}")
     print(f"Duration: {duration_str}")
-    root.destroy()
+    subprocess.Popen(['python', 'C:\proj_perso\Timer task visualization\excel_appender.py', task_label, task_name, start_time, end_time, duration_str])
+    # root.destroy()
 
 
 if __name__ == "__main__":
