@@ -1,6 +1,6 @@
 import os
-from openpyxl import load_workbook
-from datetime import datetime
+from openpyxl import Workbook, load_workbook
+from datetime import datetime, timedelta
 import pandas as pd
 import sys
 
@@ -35,8 +35,8 @@ def append_task_data(task_label, task_name, start_time_str, end_time_str, durati
     # Convert duration to seconds
     duration_seconds = duration_to_seconds(duration_str)
 
-    # Create a new row of data as a dictionary
-    new_row = {
+    # Create a Pandas DataFrame with the task data
+    data = {
         'Task Label': [task_label],
         'Task Name': [task_name],
         'Start DateTime': [start_time],
@@ -44,17 +44,9 @@ def append_task_data(task_label, task_name, start_time_str, end_time_str, durati
         'Duration (seconds)': [duration_seconds]
     }
 
-    # Load the existing Excel file into a pandas DataFrame (if it exists)
-    if os.path.exists(excel_file_path):
-        df = pd.read_excel(excel_file_path)
-    else:
-        # Create a new DataFrame if the Excel file doesn't exist
-        df = pd.DataFrame(columns=['Task Label', 'Task Name', 'Start DateTime', 'End DateTime', 'Duration (seconds)'])
+    df = pd.DataFrame(data)
 
-    # Append the new row to the DataFrame
-    df = pd.concat([df, pd.DataFrame(new_row)])
-
-    # Save the updated DataFrame to the Excel file
+    # Create a new Excel file with a visible worksheet
     with pd.ExcelWriter(excel_file_path, engine='openpyxl') as writer:
         df.to_excel(writer, sheet_name='Task Data', index=False)
 
