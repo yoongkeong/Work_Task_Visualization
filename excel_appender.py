@@ -31,7 +31,7 @@ def format_duration(duration_str):
 
 def append_task_data(task_label, task_name, start_time_str, end_time_str, duration_str):
     # Define the Excel file path (create it in the current directory)
-    excel_file_path = os.path.join(os.getcwd(), 'tasks.xlsx')
+    excel_file_path = os.path.join(os.getcwd(), 'tasksDB.xlsx')
 
     # Convert start and end times to datetime objects
     start_time = datetime.strptime(start_time_str, '%Y:%m:%d:%H:%M:%S')

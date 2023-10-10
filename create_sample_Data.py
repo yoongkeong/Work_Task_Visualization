@@ -1,9 +1,10 @@
 import random
 from datetime import datetime, timedelta
+import pandas as pd
 
 # Sample data for Task Labels and Task Names
-task_labels = ["Project A", "Project B", "Project C"]
-task_names = ["Task 1", "Task 2", "Task 3"]
+task_labels = ["Planning Phase","Design Phase", "Development Phase","Testing Phase","Deployment Phase","Monitoring Phase"]
+task_names = ["Project Kick-off", "Requirement gathering", "Design","Development","Testing","Deployment","Documentation","Project Review"]
 
 # Initialize an empty list to store the data rows
 data_rows = []
@@ -36,6 +37,15 @@ for _ in range(100):
     task_name_index = (task_name_index + 1) % len(task_names)  # Cycle through task_names
     start_date = end_time + timedelta(seconds=random.randint(1, 60 * 60))
 
-# Print the first 24 rows of data as an example
-for row in data_rows[:1000]:
-    print(row)
+# # Print the first 24 rows of data as an example
+# for row in data_rows[:1000]:
+#     print(row)
+
+# Convert data_rows to a Pandas DataFrame
+df = pd.DataFrame(data_rows, columns=['Task Label', 'Task Name', 'Start DateTime', 'End DateTime', 'Duration'])
+
+# Save the DataFrame to an Excel file
+excel_file_path = 'tasks_sampleDB.xlsx'
+df.to_excel(excel_file_path, index=False)
+
+print(f'Data saved to {excel_file_path}')
