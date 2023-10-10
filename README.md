@@ -1,7 +1,7 @@
 **Objective:**
 To record daily task performed which contributed to the effort of a project phase and generate gannt chart from it.
 
-This project consists of the following as ![Implementation](file:///C:/proj_perso/Timer%20task%20visualization/reference/Implementation_1.PNG)
+This project consists of the following as ![Implementation](https://github.com/yoongkeong/Work_Task_Visualization/blob/main/reference/Implementation_1.PNG)
 
 tasks_sample.xslx >> Sample data for create_gantt.py test
 | Task Label         | Task Name              | Start DateTime       | End DateTime         | Duration (hours) |
@@ -15,5 +15,5 @@ tasks_sample.xslx >> Sample data for create_gantt.py test
 | Monitoring Phase   | Documentation          | 10/10/2023 0:00     | 10/10/2023 2:00     | 2                 |
 
 **Note**
-Create random sample data >> create_sample_Data.py
+Create random sample data >> create_sample_Data.py **<br />**
 Change create_gantt.py file path to tasksDB.xlsx instead of tasks_sample.xlsx
